@@ -1,0 +1,13 @@
+alembic
+asyncpg
+Mako
+MarkupSafe
+psycopg2
+pydantic-settings
+python-dotenv
+SQLAlchemy
+Flask
+bcrypt
+PyJWT
+alembic
+pydantic[email] 

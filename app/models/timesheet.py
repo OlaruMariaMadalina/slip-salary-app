@@ -1,8 +1,6 @@
-from sqlalchemy import Integer, ForeignKey, Date, CheckConstraint, UniqueConstraint
+from sqlalchemy import Integer, ForeignKey, Date, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
-
-from app.models.employee import Employee
 
 class Timesheet(Base):
     __tablename__ = "timesheets"
@@ -12,7 +10,7 @@ class Timesheet(Base):
     hours_worked: Mapped[int] = mapped_column(Integer, nullable=False)
 
     employee_id: Mapped[int] = mapped_column(ForeignKey("employees.id"), nullable=False)
-    employee: Mapped["Employee"] = relationship("Employee", back_populates="timesheets")
+    employee = relationship("Employee", back_populates="timesheets")
     
     __table_args__ = (
         UniqueConstraint("employee_id", "work_date", name="uq_timesheet_per_employee_date"),
