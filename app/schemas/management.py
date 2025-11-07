@@ -2,6 +2,13 @@ from datetime import date
 from pydantic import BaseModel, Field, validator
 
 class CreateAggregatedDataRequest(BaseModel):
+    """
+    Schema for requests that require month and year input for aggregated employee data operations.
+
+    Attributes:
+        month (int): The month for the operation (must be between 1 and 12).
+        year (int): The year for the operation (must be >= 2025).
+    """
     month: int = Field(..., ge=1, le=12)
     year: int = Field(..., ge=2025)
     

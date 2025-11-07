@@ -9,7 +9,18 @@ async def count_vacation_days_by_employee_id(
     start_date: date,
     end_date: date
 ) -> int:
+    """
+    Count the number of vacation days for a specific employee within a given date range.
 
+    Args:
+        db (AsyncSession): The SQLAlchemy async session.
+        employee_id (str): The ID of the employee.
+        start_date (date): The start date of the period.
+        end_date (date): The end date of the period.
+
+    Returns:
+        int: The total number of vacation days for the employee in the specified period.
+    """
     res = await db.execute(
         select(Vacation.start_date, Vacation.end_date).where(
             Vacation.employee_id == employee_id,

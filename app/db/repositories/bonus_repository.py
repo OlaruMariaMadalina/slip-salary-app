@@ -9,6 +9,18 @@ async def sum_bonus_by_employee_id(
     start_date: date,
     end_date: date
 ) -> float:
+    """
+    Calculate the total bonus amount for a given employee within a date range.
+
+    Args:
+        db (AsyncSession): The SQLAlchemy async session.
+        employee_id (str): The ID of the employee.
+        start_date (date): The start date of the period.
+        end_date (date): The end date of the period.
+
+    Returns:
+        float: The sum of bonuses for the employee in the specified period. Returns 0.0 if no bonuses are found.
+    """
     res = await db.execute(
         select(func.sum(Bonus.bonus_amount)).where(
             Bonus.employee_id == employee_id,

@@ -11,3 +11,5 @@ bcrypt
 PyJWT
 alembic
 pydantic[email] 
+streamlit
+pandas

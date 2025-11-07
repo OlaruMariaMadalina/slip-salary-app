@@ -13,6 +13,17 @@ from PyPDF2 import PdfReader, PdfWriter
 
 
 def generate_pdf(data_list, file_name: str, password: str):
+    """
+    Generate a password-protected PDF file containing employee paycheck data.
+
+    Args:
+        data_list (list[dict]): List of dictionaries with employee data to include in the PDF.
+        file_name (str): The name of the PDF file to be generated.
+        password (str): The password to encrypt the PDF file.
+
+    Returns:
+        str: The absolute path to the generated PDF file.
+    """
     output_dir = os.path.join(os.path.dirname(__file__), '..', 'paycheck_employees')
     os.makedirs(output_dir, exist_ok=True)
     file_path = os.path.abspath(os.path.join(output_dir, file_name))
@@ -43,6 +54,18 @@ def generate_pdf(data_list, file_name: str, password: str):
     return file_path
 
 async def extract_data_for_employee_paycheck(employee_id: int, start_date: date, end_date: date, session: AsyncSession):
+    """
+    Extract paycheck data for a specific employee within a given period.
+
+    Args:
+        employee_id (int): The ID of the employee.
+        start_date (date): The start date of the period.
+        end_date (date): The end date of the period.
+        session (AsyncSession): The SQLAlchemy async session.
+
+    Returns:
+        list[dict]: List containing a dictionary with aggregated paycheck data for the employee.
+    """    
     employee = await get_employee_by_id(session, employee_id)
     data = []
     

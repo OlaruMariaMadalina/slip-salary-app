@@ -9,6 +9,22 @@ from app.models.employee import Employee
 from app.db.base import Base
 
 class UserAccount(Base):
+    """
+    SQLAlchemy model for the 'user_accounts' table.
+
+    Attributes:
+        id (int): Primary key for the user account.
+        username (str): Unique username or email for the user.
+        hashed_password (str): Hashed password for authentication.
+        role (str): Role of the user (e.g., 'user', 'admin').
+        is_active (bool): Indicates if the user account is active.
+        created_at (datetime): Timestamp when the account was created.
+        updated_at (datetime): Timestamp when the account was last updated.
+        employee_id (int): Foreign key referencing the associated employee.
+        employee (Employee): Relationship to the Employee model.
+    Table Constraints:
+        UniqueConstraint on username and employee_id: Ensures unique user accounts per employee.
+    """
     __tablename__ = "user_accounts"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)

@@ -10,6 +10,18 @@ from app.db.repositories.timesheet_repository import count_working_days_by_emplo
 from app.db.repositories.bonus_repository import sum_bonus_by_employee_id
 
 async def extract_aggregated_employee_data(department_id: str, start_date: date, end_date: date, session: AsyncSession):
+    """
+    Extract aggregated data for all employees in a department for a given period.
+
+    Args:
+        department_id (str): The ID of the department.
+        start_date (date): The start date of the period.
+        end_date (date): The end date of the period.
+        session (AsyncSession): The SQLAlchemy async session.
+
+    Returns:
+        list[dict]: List of dictionaries containing aggregated employee data.
+    """   
     employees = await get_employees_by_department_id(session, department_id)
     data = []
     
@@ -32,6 +44,16 @@ async def extract_aggregated_employee_data(department_id: str, start_date: date,
     return data
 
 def generate_excel(data_excel, file_name):
+    """
+    Generate an Excel file from aggregated employee data.
+
+    Args:
+        data_excel (list[dict]): List of dictionaries containing employee data.
+        file_name (str): The name of the Excel file to be generated.
+
+    Returns:
+        str: The absolute path to the generated Excel file.
+    """
     df = pd.DataFrame(data_excel)
     output_dir = os.path.join(os.path.dirname(__file__), '..', 'excel_reports')
     os.makedirs(output_dir, exist_ok=True)

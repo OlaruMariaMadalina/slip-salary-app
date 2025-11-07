@@ -7,6 +7,17 @@ if TYPE_CHECKING:
     from app.models.employee import Employee
     
 class Department(Base):
+    """
+    SQLAlchemy model for the 'departments' table.
+
+    Attributes:
+        id (int): Primary key for the department.
+        department_name (str): Unique name of the department.
+        department_description (str): Description of the department.
+        manager_id (int): Foreign key referencing the manager (employee) of the department.
+        manager (Employee): Relationship to the Employee model for the manager.
+        employees (list[Employee]): List of employees belonging to the department.
+    """
     __tablename__ = "departments"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)

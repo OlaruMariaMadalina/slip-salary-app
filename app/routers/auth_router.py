@@ -22,6 +22,19 @@ async def register_user(
     data: User | None,
     session: AsyncSession = Depends(get_session),
 ):
+    """
+    Register a new user account for a department manager.
+
+    Args:
+        data (User | None): The user registration data (email and password).
+        session (AsyncSession): The SQLAlchemy async session.
+
+    Raises:
+        HTTPException: If the employee is not found, not a manager, or user already exists.
+
+    Returns:
+        dict: Success message with the registered username.
+    """
     employee = await get_employee_by_email(session, data.email)
     if not employee:
         raise HTTPException(status_code=404, detail="Employee not found")
@@ -47,6 +60,19 @@ async def login_user(
     data: User | None,
     session: AsyncSession = Depends(get_session),
 ):
+    """
+    Authenticate a user and return a JWT access token.
+
+    Args:
+        data (User | None): The user login data (email and password).
+        session (AsyncSession): The SQLAlchemy async session.
+
+    Raises:
+        HTTPException: If credentials are invalid.
+
+    Returns:
+        TokenResponse: JWT access token and token type.
+    """
     user = await get_user_by_username(session, data.email)
     if not user or not verify_password(data.password, getattr(user, "hashed_password", "")):
         raise HTTPException(status_code=403, detail="Invalid credentials")

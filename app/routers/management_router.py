@@ -25,6 +25,20 @@ async def create_aggregated_employee_data(
     session: AsyncSession = Depends(get_session),
     authorization: str = Header(..., alias="Authorization")
 ):
+    """
+    Generate and save an aggregated Excel report for all employees in the manager's department for a given month and year.
+
+    Args:
+        data (CreateAggregatedDataRequest): Request data containing month and year.
+        session (AsyncSession): The SQLAlchemy async session.
+        authorization (str): Bearer token for authentication.
+
+    Raises:
+        HTTPException: If authorization is invalid, user/department not found.
+
+    Returns:
+        dict: Success message.
+    """
     if not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid Authorization header")
     token = authorization.split(" ", 1)[1]
@@ -56,6 +70,20 @@ async def send_aggregated_employee_data(
     session: AsyncSession = Depends(get_session),
     authorization: str = Header(..., alias="Authorization")
 ):
+    """
+    Send the aggregated Excel report to the manager via email.
+
+    Args:
+        data (CreateAggregatedDataRequest): Request data containing month and year.
+        session (AsyncSession): The SQLAlchemy async session.
+        authorization (str): Bearer token for authentication.
+
+    Raises:
+        HTTPException: If authorization is invalid, user/department not found, file missing, or email fails.
+
+    Returns:
+        dict: Success message.
+    """
     if not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid Authorization header")
     token = authorization.split(" ", 1)[1]
@@ -95,6 +123,20 @@ async def create_pdf_for_employees(
     session: AsyncSession = Depends(get_session),
     authorization: str = Header(..., alias="Authorization")
 ):
+    """
+    Generate and save PDF payslips for all employees in the manager's department for a given month and year.
+
+    Args:
+        data (CreateAggregatedDataRequest): Request data containing month and year.
+        session (AsyncSession): The SQLAlchemy async session.
+        authorization (str): Bearer token for authentication.
+
+    Raises:
+        HTTPException: If authorization is invalid, user/department/employees not found.
+
+    Returns:
+        dict: Success message and list of employees for whom PDFs were generated.
+    """
     if not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid Authorization header")
     token = authorization.split(" ", 1)[1]
@@ -138,6 +180,21 @@ async def send_pdf_to_employees(
     session: AsyncSession = Depends(get_session),
     authorization: str = Header(..., alias="Authorization")
 ):
+    """
+    Send PDF payslips to all employees in the manager's department for a given month and year.
+    If a paycheck already exists for an employee for that month/year, the email is not sent.
+
+    Args:
+        data (CreateAggregatedDataRequest): Request data containing month and year.
+        session (AsyncSession): The SQLAlchemy async session.
+        authorization (str): Bearer token for authentication.
+
+    Raises:
+        HTTPException: If authorization is invalid, user/department/employees not found, file missing, or email fails.
+
+    Returns:
+        dict: Success message and list of employees with send status and reason if not sent.
+    """
     if not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid Authorization header")
     token = authorization.split(" ", 1)[1]

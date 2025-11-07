@@ -15,6 +15,29 @@ if TYPE_CHECKING:
     from app.models.vacation import Vacation
     
 class Employee(Base):
+    """
+    SQLAlchemy model for the 'employees' table.
+
+    Attributes:
+        id (int): Primary key for the employee.
+        first_name (str): First name of the employee.
+        last_name (str): Last name of the employee.
+        personal_identification_number (str): Unique personal identification number.
+        email (str): Unique email address of the employee.
+        job_title (str): Job title of the employee.
+        hire_date (date): Date when the employee was hired.
+        active (bool): Indicates if the employee is currently active.
+        base_salary (Decimal): Base salary of the employee.
+        created_at (datetime): Timestamp when the employee record was created.
+        department_id (int|None): Foreign key referencing the department.
+        department (Department): Relationship to the Department model.
+        user_account (UserAccount): Relationship to the UserAccount model.
+        managed_department (Department): Relationship to the Department managed by this employee.
+        bonuses (list[Bonus]): List of bonuses received by the employee.
+        vacations (list[Vacation]): List of vacations taken by the employee.
+        paychecks (list[Paycheck]): List of paychecks for the employee.
+        timesheets (list[Timesheet]): List of timesheets for the employee.
+    """
     __tablename__ = "employees"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)

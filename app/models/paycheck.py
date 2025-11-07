@@ -5,6 +5,20 @@ from sqlalchemy import TIMESTAMP, func
 from datetime import datetime
     
 class Paycheck(Base):
+    """
+    SQLAlchemy model for the 'paychecks' table.
+
+    Attributes:
+        id (int): Primary key for the paycheck.
+        pay_month (int): The month for which the paycheck is issued.
+        pay_year (int): The year for which the paycheck is issued.
+        sent_to_employee (bool): Indicates if the paycheck has been sent to the employee.
+        sent_at (datetime): Timestamp when the paycheck was sent.
+        employee_id (int): Foreign key referencing the employee who receives the paycheck.
+        employee (Employee): Relationship to the Employee model.
+    Table Constraints:
+        UniqueConstraint on (employee_id, pay_month, pay_year): Ensures one paycheck per employee per month/year.
+    """
     __tablename__ = "paychecks"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
