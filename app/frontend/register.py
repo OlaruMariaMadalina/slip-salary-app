@@ -15,7 +15,7 @@ def register_page():
             if response.status_code == 200:
                 st.success("Account registered successfully!")
             else:
-                st.error(f"Eroare: {response.text}")
+                st.error(f"Error: {response.text}")
 
 def login_page():
     st.header("Login")

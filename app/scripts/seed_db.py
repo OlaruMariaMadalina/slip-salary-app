@@ -16,7 +16,7 @@ async def seed():
     from sqlalchemy import text
     async with SessionLocal() as session:
 
-        # Delete from user_accounts first to avoid FK violation
+
         await session.execute(text('DELETE FROM paychecks'))
         await session.execute(text('DELETE FROM bonuses'))
         await session.execute(text('DELETE FROM vacations'))
@@ -40,7 +40,7 @@ async def seed():
             email="mariamadalinaolaru26@gmail.com",
             job_title="Dev Manager",
             hire_date=date(2017, 2, 2),
-            base_salary=Decimal("13000.00"),
+            base_salary=Decimal("23000.00"),
             department_id=dev_dept.id,
         )
         data_manager = Employee(
@@ -104,36 +104,36 @@ async def seed():
                 first_name="Rodica Elena",
                 last_name="Rosca",
                 personal_identification_number="1111111111111",
-                email="olarumaria96@yahoo.ro",
+                email="rosca.rodica44@gmail.com",
                 job_title="Python Developer",
                 hire_date=date(2019, 2, 1),
-                base_salary=Decimal("8500.00"),
+                base_salary=Decimal("27500.00"),
                 department_id=dev_dept.id,
             ),
             Employee(
                 first_name="Ana",
                 last_name="Ciobanu",
                 personal_identification_number="2222222222222",
-                email="viorelonica95@gmail.com",
+                email="ana.ciobanu1321@gmail.com",
                 job_title="Python Developer",
                 hire_date=date(2020, 6, 10),
-                base_salary=Decimal("7800.00"),
+                base_salary=Decimal("27800.00"),
                 department_id=dev_dept.id,
             ),
             Employee(
                 first_name="Sergiu",
                 last_name="Ungureanu",
                 personal_identification_number="3333333333333",
-                email="viorel.onica@yahoo.com",
+                email="ungureanusergiusergiu@hotmail.com",
                 job_title="Python Developer",
                 hire_date=date(2021, 8, 25),
-                base_salary=Decimal("9500.00"),
+                base_salary=Decimal("26500.00"),
                 department_id=dev_dept.id,
             ),
         ]
         session.add_all(employees_data + employees_dev + [data_manager, dev_manager])
         await session.flush()
-        # Set the month and year for which to generate timesheets
+
         year = 2025
         month = 11  
 
@@ -157,9 +157,8 @@ async def seed():
         session.add_all(timesheets)
         await session.commit()
         
-        # Adaugă un bonus pentru un angajat (de exemplu, pentru Ana Popescu)
-        # Adaugă un bonus pentru Ana Popescu
-        ana = await session.execute(select(Employee).where(Employee.email == "ana.popescu@datacorp.com"))
+
+        ana = await session.execute(select(Employee).where(Employee.email == "ana.ciobanu1321@gmail.com"))
         ana_employee = ana.scalar_one_or_none()
         if ana_employee:
             bonus = Bonus(
@@ -170,31 +169,31 @@ async def seed():
             session.add(bonus)
             await session.commit()
 
-        # Adaugă zile de concediu (vacation) pentru Mihai Ionescu
-        mihai = await session.execute(select(Employee).where(Employee.email == "mihai.ionescu@datacorp.com"))
-        mihai_employee = mihai.scalar_one_or_none()
-        if mihai_employee:
+
+        rodica = await session.execute(select(Employee).where(Employee.email == "rosca.rodica44@gmail.com"))
+        rodica_employee = rodica.scalar_one_or_none()
+        if rodica_employee:
             vacation_days = [date(year, month, 5), date(year, month, 6)]
             for vac_day in vacation_days:
-            # Adaugă concediul
+
                 vacation = Vacation(
-                    employee_id=mihai_employee.id,
+                    employee_id=rodica_employee.id,
                     start_date=vac_day,
                     end_date=vac_day,
                 )
             session.add(vacation)
-            # Șterge timesheet-ul pentru ziua de concediu
+
             await session.execute(
                 select(Timesheet)
                 .where(
-                Timesheet.employee_id == mihai_employee.id,
+                Timesheet.employee_id == rodica_employee.id,
                 Timesheet.work_date == vac_day
                 )
                 .execution_options(synchronize_session="fetch")
             )
             await session.execute(
                 Timesheet.__table__.delete().where(
-                Timesheet.employee_id == mihai_employee.id,
+                Timesheet.employee_id == rodica_employee.id,
                 Timesheet.work_date == vac_day
                 )
             )
