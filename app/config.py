@@ -9,8 +9,8 @@ class Settings(BaseSettings):
     JWT_EXPIRE_MINUTES: int = 60
     SMTP_SERVER: str = "smtp.gmail.com"
     SMTP_PORT: int = 587
-    SMTP_USERNAME: str = "mariamadalinaolaru26@gmail.com"
-    SMTP_PASSWORD: str = "xlwfmzaakoeqtnnw"
+    SMTP_USERNAME: str 
+    SMTP_PASSWORD: str 
     
     
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
